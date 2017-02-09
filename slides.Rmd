@@ -1,13 +1,116 @@
 ---
-title: "Confusion"
+title: "Cardinal"
 author: "Lyron Winderbaum"
 date: "`r Sys.Date()`"
 output: ioslides_presentation
 ---
 
+```{r libraries, echo = FALSE}
+suppressMessages(library(Cardinal))
+```
+
 ## Contents
 
-- Some stuff.
+[Cardinal](https://bioconductor.org/packages/release/bioc/html/Cardinal.html)
+is a package for R designed to be used for the analsis of mass spectrometry 
+imaging data, I'll demonstrate:
+
+- Reading in IMZML data.
+- Plotting Spectra.
+- Plotting Masses.
+- Peakpicking.
+- Multivariate Methods.
+
+## Reading Data
+
+Reading IMZML data is trivial. Cardinal can also read Analyze 7.5 format imaging
+data if needed.
+
+```{r read_data, cache = TRUE}
+d.name = "example"
+d.fold = "data"
+data   = readImzML(d.name, d.fold)
+```
+
+All the relevant information about the data can be obtained through the 
+functions `mz`, `coord`, `spectra`, `features`, `pixels`, and some overwritten
+base functions such as `dims`, `nrow`, and `ncol`, for example:
+
+```{r dims}
+dim(data)
+```
+
+
+## Plotting Individual Spectra
+
+```{r plot_spectrum, cache = TRUE}
+plot(data, coord = list(x = 678, y = 209))
+```
+
+## Plotting Mean Spectra
+
+```{r plot_mean_spectrum, cache = TRUE}
+plot(data, coord = list(x = 678, y = 209), plusminus = 5)
+```
+
+## Plotting Multiple Spectra
+
+```{r plot_multiple_spectra, echo = 9:10, cache = TRUE}
+x = coord(data)$x
+y = coord(data)$y
+spec = which((abs(x - 678) < 5) & (abs(y - 209) < 5))
+group = rep(0, length(spec))
+spec = c(spec, which((abs(x - 750) < 5) & (abs(y - 130) < 5)))
+group = c(group, rep(1, length(spec) - length(group)))
+spec = c(spec, which((abs(x - 750) < 5) & (abs(y - 400) < 5)))
+group = c(group, rep(2, length(spec) - length(group)))
+plot(data, pixel=spec, pixel.groups = group, 
+     superpose = TRUE, key = TRUE, col = c("blue", "red", "magenta"))
+```
+
+
+## Plotting Particular Masses
+
+```{r plot_mass, cache = TRUE}
+image(data, mz = 1298, plusminus=0.3)
+```
+
+## Peakpicking and other Preprocessing
+
+Can be performed using various provided functions, including normalisation 
+(`normalize`), smoothing (`smoothSignal`), baseline reduction 
+(`reduceBaseline`), peak picking (`peakPick`), and peak alignment (`peakAlign`).
+
+Cardinal also includes some useful functions for other common preprocessing
+operations such as resamping/ binning (`reduceDimension`) and filtering rare
+peaks (`peakFilter`).
+
+<!-- ## PCA -->
+
+<!-- ```{r pca_loadings, cache = TRUE} -->
+<!-- pca = PCA(data, ncomp = 1) -->
+<!-- plot(pca) -->
+<!-- ``` -->
+
+<!-- ## PCA Scores -->
+
+<!-- ```{r pca_scores, cache = TRUE, dependson = "pca_loadings"} -->
+<!-- image(pca) -->
+<!-- ``` -->
+
+## Multivariate Methods
+
+Such as PCA, PLS, O-PLS, and spatial k-means are all provided as high-level
+user friendly functions.
+
+## k-means
+
+```{r kmeans, cache = TRUE}
+set.seed(123)
+skm = spatialKMeans(data, r = 3, k = 2, method = 'adaptive')
+image(skm)
+```
+
 
 ## Colophon
 
