@@ -1,0 +1,29 @@
+---
+title: "Confusion"
+author: "Lyron Winderbaum"
+date: "`r Sys.Date()`"
+output: ioslides_presentation
+---
+
+## Contents
+
+- Some stuff.
+
+## Colophon
+
+These slides were written in [Rmarkdown](http://rmarkdown.rstudio.com/) inside 
+[RStudio](https://www.rstudio.com/products/rstudio/). 
+Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word 
+documents.
+[knitr](http://yihui.name/knitr/) and [pandoc](http://pandoc.org/) converted the 
+raw Rmarkdown to html. The complete source is available from 
+[github](https://github.com/Armadilloa16/cardinal). The wording for this 
+colophon was inspired by [hadley's book](http://r-pkgs.had.co.nz/), which is a 
+useful resource I would reccomend to anyone aspiring to learn to write packages
+for R.
+
+<!-- ## Colophon -->
+
+<!-- ```{r session_info, size = 'large'} -->
+<!-- devtools::session_info() -->
+<!-- ``` -->
