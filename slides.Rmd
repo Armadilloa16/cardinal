@@ -16,9 +16,9 @@ is a package for R designed to be used for the analsis of mass spectrometry
 imaging data, I'll demonstrate:
 
 - Reading in IMZML data.
+- Peakpicking.
 - Plotting Spectra.
 - Plotting Masses.
-- Peakpicking.
 - Multivariate Methods.
 
 ## Reading Data
@@ -40,6 +40,15 @@ base functions such as `dims`, `nrow`, and `ncol`, for example:
 dim(data)
 ```
 
+## Peakpicking and other Preprocessing
+
+Can be performed using various provided functions, including normalisation 
+(`normalize`), smoothing (`smoothSignal`), baseline reduction 
+(`reduceBaseline`), peak picking (`peakPick`), and peak alignment (`peakAlign`).
+
+Cardinal also includes some useful functions for other common preprocessing
+operations such as resamping/ binning (`reduceDimension`) and filtering rare
+peaks (`peakFilter`).
 
 ## Plotting Individual Spectra
 
@@ -69,21 +78,11 @@ plot(data, pixel=spec, pixel.groups = group,
 ```
 
 
-## Plotting Particular Masses
+## Similarly, Masses can be plotted spatially.
 
 ```{r plot_mass, cache = TRUE}
 image(data, mz = 1298, plusminus=0.3)
 ```
-
-## Peakpicking and other Preprocessing
-
-Can be performed using various provided functions, including normalisation 
-(`normalize`), smoothing (`smoothSignal`), baseline reduction 
-(`reduceBaseline`), peak picking (`peakPick`), and peak alignment (`peakAlign`).
-
-Cardinal also includes some useful functions for other common preprocessing
-operations such as resamping/ binning (`reduceDimension`) and filtering rare
-peaks (`peakFilter`).
 
 <!-- ## PCA -->
 
@@ -100,17 +99,18 @@ peaks (`peakFilter`).
 
 ## Multivariate Methods
 
-Such as PCA, PLS, O-PLS, and spatial k-means are all provided as high-level
-user friendly functions.
+Such as PCA, PLS, O-PLS, spatial k-means and some others are all provided as 
+high-level user friendly functions as well. These are slow however, and so it 
+is advisable to perform some data reduction prior to using them so that 
+iteration is faster.
 
-## k-means
+<!-- ## k-means -->
 
-```{r kmeans, cache = TRUE}
-set.seed(123)
-skm = spatialKMeans(data, r = 3, k = 2, method = 'adaptive')
-image(skm)
-```
-
+<!-- ```{r kmeans, cache = TRUE, warning = FALSE} -->
+<!-- set.seed(123) -->
+<!-- skm = spatialKMeans(data, r = 3, k = 2, method = 'adaptive') -->
+<!-- image(skm) -->
+<!-- ``` -->
 
 ## Colophon
 
@@ -124,8 +124,6 @@ raw Rmarkdown to html. The complete source is available from
 colophon was inspired by [hadley's book](http://r-pkgs.had.co.nz/), which is a 
 useful resource I would reccomend to anyone aspiring to learn to write packages
 for R.
-
-<!-- ## Colophon -->
 
 <!-- ```{r session_info, size = 'large'} -->
 <!-- devtools::session_info() -->
